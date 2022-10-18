@@ -1,5 +1,5 @@
 import { $, wait } from "../utils";
-import { BOARD_LENGTH } from "../constants";
+import { BOARD_LENGTH, dropSound, slideSound } from "../constants";
 
 function clearBoard(boardEl) {
   for (const cell of boardEl.children) {
@@ -31,6 +31,7 @@ export function createBoard(boardEl, knight) {
       boardCell.addEventListener("drop", (e) => {
         e.preventDefault();
         clearBoard(boardEl);
+        dropSound.play();
         knight.move(col, row);
       });
 
@@ -50,8 +51,9 @@ export function createBoard(boardEl, knight) {
 
         for (const [x, y] of moves) {
           knight.move(x, y);
-          await wait(550);
+          await wait(700);
           if (pos < moves.length - 1) {
+            slideSound.play();
             $(`[data-coords="${x}-${y}"]`).innerHTML = `<span>${pos++}</span>`;
           }
         }
