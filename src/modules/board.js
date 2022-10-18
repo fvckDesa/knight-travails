@@ -1,14 +1,5 @@
-import knightMoves from "./knightMoves";
-import { wait } from "./utils";
-
-const BOARD_LENGTH = 8;
-
-// Dom selector as jquery
-export function $(selector, getAll = false, parent = document) {
-  return getAll
-    ? parent.querySelectorAll(selector)
-    : parent.querySelector(selector);
-}
+import { $, wait } from "../utils";
+import { BOARD_LENGTH } from "../constants";
 
 function clearBoard(boardEl) {
   for (const cell of boardEl.children) {
@@ -19,7 +10,7 @@ function clearBoard(boardEl) {
 export function createBoard(boardEl, knight) {
   let isMoving = false;
   // clear board
-  boardEl.replaceChildren(knight);
+  boardEl.replaceChildren(knight.element);
   // create new board
   for (let row = 0; row < BOARD_LENGTH; row++) {
     for (let col = 0; col < BOARD_LENGTH; col++) {
@@ -40,27 +31,25 @@ export function createBoard(boardEl, knight) {
       boardCell.addEventListener("drop", (e) => {
         e.preventDefault();
         clearBoard(boardEl);
-        moveKnight(knight, col, row);
+        knight.move(col, row);
       });
 
       boardCell.addEventListener("click", async () => {
         if (isMoving) return;
         // active flags
         isMoving = true;
-        knight.draggable = false;
-        knight.classList.add("move");
+        knight.element.draggable = false;
+        knight.element.classList.add("move");
         boardEl.classList.add("isMoving");
 
         clearBoard(boardEl);
 
-        const knightX = parseFloat(knight.style.left) / 12.5;
-        const knightY = parseFloat(knight.style.top) / 12.5;
         let pos = 0;
 
-        const moves = knightMoves([knightX, knightY], [col, row]);
+        const moves = knight.steps([col, row]);
 
         for (const [x, y] of moves) {
-          moveKnight(knight, x, y);
+          knight.move(x, y);
           await wait(550);
           if (pos < moves.length - 1) {
             $(`[data-coords="${x}-${y}"]`).innerHTML = `<span>${pos++}</span>`;
@@ -68,17 +57,12 @@ export function createBoard(boardEl, knight) {
         }
         // remove flags
         isMoving = false;
-        knight.draggable = true;
-        knight.classList.remove("move");
+        knight.element.draggable = true;
+        knight.element.classList.remove("move");
         boardEl.classList.remove("isMoving");
       });
 
       boardEl.appendChild(boardCell);
     }
   }
-}
-
-export function moveKnight(knight, x, y) {
-  knight.style.left = `${x * 12.5}%`;
-  knight.style.top = `${y * 12.5}%`;
 }

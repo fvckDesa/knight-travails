@@ -1,15 +1,14 @@
 import "./style.css";
-import { $, createBoard, moveKnight } from "./module/dom";
-import { random } from "./module/utils";
+import { Knight, createBoard } from "./modules";
+import { $, random } from "./utils";
 
-const knight = $(".knightChess");
+const knight = Knight($(".knightChess"));
 
 createBoard($(".board"), knight);
 
 // set knight in random position
-moveKnight(knight, random(8), random(8));
+knight.move(random(8), random(8));
 
-knight.addEventListener("dragstart", (e) => {
-  e.preventDefault();
+knight.element.addEventListener("dragstart", (e) => {
   e.dataTransfer.effectAllowed = "move";
 });
