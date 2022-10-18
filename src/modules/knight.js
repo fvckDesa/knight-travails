@@ -17,5 +17,8 @@ export default function Knight(knight) {
     get element() {
       return knight;
     },
+    get coords() {
+      return [knightX, knightY];
+    },
   };
 }

@@ -61,7 +61,7 @@ body {
   padding: 5px;
   transition: scale 0.3s;
   transition-timing-function: ease;
-  z-index: 1;
+  z-index: 2;
 }
 
 .knightChess.move {
@@ -71,4 +71,52 @@ body {
 .board:not(.isMoving) .knightChess:hover {
   scale: 1.1;
   cursor: grab;
+}
+
+.arrowContainer {
+  --cell-length: calc(100% / 8);
+  --arrow-padding: calc(var(--cell-length) / 4);
+  --redundant-arrow-padding: 5px;
+  position: absolute;
+  height: 5px;
+  padding-right: calc(var(--arrow-padding) + var(--redundant-arrow-padding));
+  padding-left: var(--arrow-padding);
+  transform-origin: left;
+  z-index: 1;
+}
+
+.arrowContainer:last-child {
+  padding-right: calc(var(--cell-length) / 2 + var(--redundant-arrow-padding));
+}
+
+.arrow {
+  position: relative;
+  width: 0;
+  height: 100%;
+  border-radius: 1000px 0 0 1000px;
+  background-color: #ff0000;
+  animation: appear 0.65s ease 0.1s forwards;
+  transition: width 0.3s ease;
+}
+
+@keyframes appear {
+  0% {
+    width: 1%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.arrow::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  translate: -50% -50%;
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 10px solid #ff0000;
 }
