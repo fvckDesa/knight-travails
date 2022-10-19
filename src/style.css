@@ -23,13 +23,45 @@ body {
   font-family: var(--font-family);
 }
 
+.boardWrapper {
+  position: relative;
+  width: min(100%, 500px);
+  aspect-ratio: 1;
+}
+
+.axisX {
+  position: absolute;
+  display: flex;
+  top: 100%;
+  width: 100%;
+  height: calc(100% / 8);
+}
+
+.axisY {
+  position: absolute;
+  display: flex;
+  flex-direction: column-reverse;
+  right: 100%;
+  width: calc(100% / 8);
+  height: 100%;
+}
+
+.axisItem {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 700;
+}
+
 .board {
   position: relative;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(8, 1fr);
-  width: min(100%, 500px);
-  aspect-ratio: 1;
+  width: 100%;
+  height: 100%;
   box-shadow: 5px 5px 30px 4px rgba(0, 0, 0, 0.6);
 }
 
